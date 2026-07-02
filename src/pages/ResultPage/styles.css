@@ -1,0 +1,17 @@
+.result-title {
+  text-align: center;
+  color: #1a0246;
+}
+
+.sacerdote-icon{
+  display: flex;
+  align-self: center;
+  place-items: center;
+  
+}
+
+.sacerdote-icon img{
+  width: 136px;
+  height: 180px;
+  filter: drop-shadow(0 0 1.2em #F2C94C);
+}

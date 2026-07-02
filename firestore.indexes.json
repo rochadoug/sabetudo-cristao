@@ -1,0 +1,74 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "menorahLit",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "oil",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ],
+      "density": "SPARSE_ALL"
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "menorahLit",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "oil",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "gold",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ],
+      "density": "SPARSE_ALL"
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "menorahLit",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "oil",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "gold",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "totalCorrect",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ],
+      "density": "SPARSE_ALL"
+    }
+  ],
+  "fieldOverrides": []
+}

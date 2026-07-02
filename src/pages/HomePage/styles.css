@@ -1,0 +1,114 @@
+
+/* Header */
+.home-greeting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.home-greeting h1 {
+    font-size: 18px;
+    color: #1a0246;
+    /*var(--text-primary);*/
+    margin-bottom: 2px;
+}
+
+
+/* Progresso */
+.status-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.menorah-placeholder {
+    font-size: 58px;
+}
+
+.menorah-icon {
+    width: 80px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.status-text {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+/* CTA */
+.cta-button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight:600;
+    font-size: 16px;
+}
+
+.cta-button:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+}
+
+/* Recursos */
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.home-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+
+/* Ranking */
+.ranking-preview {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+}
+
+
+.ranking-preview .value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.logo {
+    height: 5em;
+    width: 5em;
+    padding: 5px;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.link-button span {
+    font-size: 12px;
+}

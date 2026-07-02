@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "sabetudocristao",
+    "prod": "sabetudocristao",
+    "dev": "sabetudocristao-dev"
+  },
+  "targets": {},
+  "etags": {}
+}

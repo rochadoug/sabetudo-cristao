@@ -1,0 +1,24 @@
+:root {
+   --max-width: 480px;
+
+  --primary: #E36A1F;
+  --primary-dark: #B84812;
+  --primary-light: #FF8C3A;
+
+  --gold: #F2C94C;
+  --gold-dark: #D4A017;
+
+  --bg: #FAFAFA;
+  --card: #FFFFFF;
+  --divider: #EDEDED;
+
+  --text-primary: #1F1F1F;
+  --text-secondary: #5A5A5A;
+
+  --success: #2E7D32;
+  --error: #C62828;
+  --reveal: #77af79;
+  --disabled: #CFCFCF;
+
+    --radius: 12px;
+}

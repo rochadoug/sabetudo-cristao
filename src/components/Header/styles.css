@@ -1,0 +1,54 @@
+.app-header {
+  height: 56px; /* padrão mobile (Material / iOS safe) */
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+
+  background: var(--bg);
+  border-bottom: 1px solid var(--divider);
+}
+
+
+.header-left,
+.header-right {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 0;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.back-button img{
+  width: 24px;
+  height: 24px;
+}
+
+.header-logo {
+  width: 24px;
+  height: 24px;
+}

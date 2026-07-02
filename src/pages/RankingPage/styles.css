@@ -1,0 +1,78 @@
+.my-rank-fixed {
+  position: sticky;
+  background: var(--bg);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.my-rank-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.my-rank-flames {
+  display: flex;
+  gap: 4px;
+  padding-left: 40px;
+}
+
+
+.ranking-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-item {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ranking-item.me {
+  border: 2px solid var(--primary);
+  background: rgba(242, 201, 76, 0.12);
+}
+
+.row-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pos {
+  width: 32px;
+  font-weight: bold;
+}
+
+.name {
+  flex: 1;
+}
+
+.gold {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+}
+
+.gold img {
+  width: 16px;
+  height: 16px;
+}
+
+.row-bottom {
+  display: flex;
+  gap: 4px;
+  padding-left: 40px; /* alinha abaixo do nome */
+}
+
+.mini-flame {
+  width: 14px;
+  height: 14px;
+}

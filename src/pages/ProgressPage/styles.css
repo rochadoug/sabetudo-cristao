@@ -1,0 +1,148 @@
+.progress-page {
+  min-height: 100dvh;
+  padding: 16px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.progress-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-greeting h1 {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.progress-greeting p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.menorah-container {
+  position: relative;
+  width: 100%;
+  max-width: 180px;
+  margin: 0 auto;
+}
+
+.menorah-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.flame {
+  position: absolute;
+  width: 7%;
+  transform: translate(-50%, -100%);
+  opacity: 1;
+  animation: flameFlicker 2.4s infinite ease-in-out;
+  transform-origin: center bottom;
+}
+
+.flame.new {
+  animation: flameAppear 0.9s ease-out forwards;
+  transform-origin: center bottom;
+}
+
+@keyframes flameAppear {
+  0% {
+    transform: translate(-50%, -100%) scale(0.2);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -100%) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+@keyframes flameFlicker {
+  0% {
+    filter: blur(0.4px) brightness(1);
+  }
+
+  50% {
+    filter: blur(1px) brightness(1.15);
+  }
+
+  100% {
+    filter: blur(0.4px) brightness(1);
+  }
+}
+
+.menorah-img.glow {
+    animation: menorahGlow 1.1s ease-out;
+    animation-fill-mode: both;
+}
+
+@keyframes menorahGlow {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(255, 200, 80, 0));
+    }
+    30% {
+        filter: drop-shadow(0 0 18px rgba(255, 190, 90, 0.9));
+    }
+    60% {
+        filter: drop-shadow(0 0 28px rgba(255, 210, 120, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0 0 0 rgba(255, 200, 80, 0));
+    }
+}
+
+.progresspage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.progresspage-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-actions button:active{
+  transform:scale(0.98);
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-weight: 450;
+  margin-top: 2%;
+}
+
+.progress-actions button:disabled {
+  opacity: 0.8;
+  background: var(--disabled);
+  color: var(--primary);
+  border-radius: 12px;
+  border: none;
+  transform:scale(0.97);
+}
