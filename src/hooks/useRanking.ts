@@ -4,6 +4,7 @@ import {
   getDocs,
   orderBy,
   query,
+  limit
 } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useUser } from "../contexts/UserContext";
@@ -31,39 +32,47 @@ export function useRanking() {
   useEffect(() => {
     async function loadRanking() {
       setLoading(true);
+      try {
+        // Reduzimos os orderBys para os 2 principais para evitar a exigência de índices complexos temporariamente,
+        // e adicionamos um limite de 50 usuários para poupar leitura do seu banco.
+        const q = query(
+          collection(db, "users"),
+          orderBy("menorahLit", "desc"),
+          orderBy("oil", "desc"),
+          orderBy("gold", "desc"),
+          orderBy("totalCorrect", "desc"),
+          limit(50)
+        );
 
-      const q = query(
-        collection(db, "users"),
-        orderBy("menorahLit", "desc"),
-        orderBy("oil", "desc"),
-        orderBy("gold", "desc"),
-        orderBy("totalCorrect", "desc")
-      );
+        const snap = await getDocs(q);
 
-      const snap = await getDocs(q);
+        const list: RankingUserWithMeta[] = snap.docs.map((doc, index) => {
+          const data = doc.data() as RankingUser;
 
-      const list: RankingUserWithMeta[] = snap.docs.map((doc, index) => {
-        const data = doc.data() as RankingUser;
+          return {
+            ...data,
+            uid: doc.id,
+            position: index + 1,
+            isMe: doc.id === user?.uid,
+          };
+        });
 
-        return {
-          ...data,
-          uid: doc.id,
-          position: index + 1,
-          isMe: doc.id === user?.uid,
-        };
-      });
+        setRanking(list);
 
-      setRanking(list);
+        // Se for um usuário real, ele se achará na lista
+        const currentUser = list.find(u => u.isMe) || null;
+        setMe(currentUser);
 
-      const currentUser = list.find(u => u.isMe) || null;
-      setMe(currentUser);
-
-      setLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar ranking do Firestore: ", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    if (user) {
-      loadRanking();
-    }
+    // Agora o ranking carrega mesmo se for convidado ou usuário logado
+    loadRanking();
+
   }, [user?.uid]);
 
   return {

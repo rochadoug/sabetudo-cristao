@@ -1,40 +1,87 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
-import type { User } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../services/auth";
 
+// Tipagem para as estatísticas do jogo do usuário
+export type GameUserData = {
+  uid: string;
+  name: string;
+  gold: number;
+  oil: number;
+  menorahLit: number;
+  totalCorrect: number;
+  answeredQuestions: string[];
+  lastAnswerDate: string;
+  createdAt: string;
+  isGuest: boolean;
+};
 
 type AuthContextType = {
-  user: User | null;
+  user: GameUserData | null;
   loading: boolean;
-  signInAnon: () => Promise<User>;
+  loginAsGuestLocal: (guestData: GameUserData) => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<GameUserData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
+    // 1. Primeiro, checa se existe um Convidado salvo localmente
+    const localGuest = localStorage.getItem("@SabeTudoCristao:guest");
 
-    return () => unsub();
+    if (localGuest) {
+      setUser(JSON.parse(localGuest));
+      setLoading(false);
+    } else {
+      // 2. Se não houver convidado, ouve o Firebase Auth (para futuras contas reais)
+      const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+        if (firebaseUser) {
+          // Quando você implementar a conta real, aqui você buscará 
+          // os dados do Firestore usando o firebaseUser.uid.
+          // Por enquanto, montamos um objeto compatível:
+          setUser({
+            uid: firebaseUser.uid,
+            name: firebaseUser.displayName || "Usuário",
+            gold: 0,
+            oil: 0,
+            menorahLit: 0,
+            totalCorrect: 0,
+            answeredQuestions: [],
+            lastAnswerDate: new Date().toISOString().slice(0, 10),
+            createdAt: new Date().toISOString(),
+            isGuest: false,
+          });
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      });
+
+      return () => unsub();
+    }
   }, []);
 
-  async function signInAnon(): Promise<User> {
+  // Nova função para salvar o convidado localmente
+  function loginAsGuestLocal(guestData: GameUserData) {
+    localStorage.setItem("@SabeTudoCristao:guest", JSON.stringify(guestData));
+    setUser(guestData);
+  }
+
+  // Função de logout atualizada para limpar ambos os estados
+  async function logout() {
     setLoading(true);
-
-    const cred = await signInAnonymously(auth);
-
-    return cred.user;
+    localStorage.removeItem("@SabeTudoCristao:guest");
+    await signOut(auth);
+    setUser(null);
+    setLoading(false);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInAnon }}>
+    <AuthContext.Provider value={{ user, loading, loginAsGuestLocal, logout }}>
       {children}
     </AuthContext.Provider>
   );

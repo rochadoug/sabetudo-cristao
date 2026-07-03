@@ -1,17 +1,7 @@
 import { useState } from 'react';
 import './styles.css';
 import Logo from '../../components/Logo';
-import { db } from '../../services/firebase';
-import {
-  /*   collection,
-    getDocs,
-    query,
-    where, */
-  setDoc,
-  doc,
-} from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import { updateProfile } from 'firebase/auth';
 
 function LoginPage() {
   const [mode, setMode] = useState<'login' | 'guest'>('guest');
@@ -19,7 +9,8 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { signInAnon } = useAuth();
+  // Pegamos a função de login local do nosso contexto (vamos criá-la/ajustá-la no AuthContext)
+  const { loginAsGuestLocal } = useAuth();
 
   async function handleGuestLogin() {
     if (!name.trim()) {
@@ -31,19 +22,10 @@ function LoginPage() {
     setError('');
 
     try {
-
-
-      // auth anônimo
-      const user = await signInAnon();
-      const uid = user.uid;
-
-      await updateProfile(user, {
-        displayName: name.trim()
-      });
-      
-      // cria usuário no firestore
-      await setDoc(doc(db, 'users', uid), {
-        uid,
+      // 1. Criamos a mesma estrutura de dados que ia para o Firestore, mas agora localmente
+      const guestUid = `guest_${Date.now()}`;
+      const guestData = {
+        uid: guestUid,
         name: name.trim(),
         gold: 0,
         oil: 0,
@@ -51,13 +33,16 @@ function LoginPage() {
         totalCorrect: 0,
         answeredQuestions: [],
         lastAnswerDate: new Date().toISOString().slice(0, 10),
-        createdAt: new Date(),
-      });
+        createdAt: new Date().toISOString(),
+        isGuest: true // Flag crucial para sabermos que não está no Firebase ainda
+      };
+
+      // 2. Chamamos a função do contexto para salvar e atualizar o estado global do app
+      loginAsGuestLocal(guestData);
 
     } catch (err) {
       console.error(err);
       setError('Erro ao entrar como convidado');
-
     } finally {
       setLoading(false);
     }
@@ -113,7 +98,6 @@ function LoginPage() {
             </button>
           </>
         )}
-
       </div>
     </main>
   );
