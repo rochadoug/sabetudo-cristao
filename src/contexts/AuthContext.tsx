@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../services/auth";
+import { encodeGuestData, decodeGuestData } from "../utils";
+
+export const LOCAL_STORAGE_GUEST_KEY = '@SabeTudoCristao:guest';
 
 // Tipagem para as estatísticas do jogo do usuário
 export type GameUserData = {
@@ -31,10 +34,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // 1. Primeiro, checa se existe um Convidado salvo localmente
-    const localGuest = localStorage.getItem("@SabeTudoCristao:guest");
+    const localGuest = localStorage.getItem(LOCAL_STORAGE_GUEST_KEY);
 
     if (localGuest) {
-      setUser(JSON.parse(localGuest));
+      // 🔒 Decodifica a string misteriosa de volta para objeto usando seu helper
+      const decoded = decodeGuestData(localGuest);
+      
+      if (decoded) {
+        setUser(decoded);
+      } else {
+        // Se os dados estiverem corrompidos/alterados, limpa para evitar quebras
+        localStorage.removeItem(LOCAL_STORAGE_GUEST_KEY);
+        setUser(null);
+      }
       setLoading(false);
     } else {
       // 2. Se não houver convidado, ouve o Firebase Auth (para futuras contas reais)
@@ -67,8 +79,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Nova função para salvar o convidado localmente
   function loginAsGuestLocal(guestData: GameUserData) {
-    localStorage.setItem("@SabeTudoCristao:guest", JSON.stringify(guestData));
-    setUser(guestData);
+    try {
+      // 🔒 Codifica antes de salvar
+      const secretString = encodeGuestData(guestData);
+      localStorage.setItem(LOCAL_STORAGE_GUEST_KEY, secretString);
+      setUser(guestData);
+    } catch (err) {
+      console.error("Erro ao salvar convidado localmente:", err);
+    }
   }
 
   // Função de logout atualizada para limpar ambos os estados

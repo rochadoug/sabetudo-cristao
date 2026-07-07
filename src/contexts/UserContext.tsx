@@ -4,6 +4,8 @@ import { db } from "../services/firebase";
 import { collection, getCountFromServer, query, where } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 import type { GameUserData } from "./AuthContext";
+import {LOCAL_STORAGE_GUEST_KEY} from "./AuthContext";
+import { encodeGuestData, decodeGuestData } from "../utils";
 
 // 🔹 Funções expostas
 type UserContextType = {
@@ -23,7 +25,7 @@ export const OIL_PER_LAMP = 3;
 
 const UserContext = createContext<UserContextType | null>(null);
 
-// 🔥 Provider
+//  Provider
 export function UserProvider({ children }: { children: React.ReactNode }) {
     const { user: authUser, loading: authLoading } = useAuth();
 
@@ -34,7 +36,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const [correctCount, setCorrectCount] = useState(0);
     const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // 🔹 Carrega usuário (Local ou Firestore)
+    //  Carrega usuário (Local ou Firestore)
     useEffect(() => {
         if (authLoading) return; // Espera o Auth resolver
 
@@ -90,7 +92,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         loadUser();
     }, [authUser, authLoading]);
 
-    // 🔹 Atualiza Ranking apenas para usuários reais (Convidados ficam sem rank global)
+    //  Atualiza Ranking apenas para usuários reais (Convidados ficam sem rank global)
     useEffect(() => {
         if (!user || user.isGuest) {
             setRank(null);
@@ -105,8 +107,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setUser(updatedUser);
 
         if (updatedUser.isGuest) {
-            // Salva o convidado apenas no localStorage (substituindo o antigo "user_snapshot" e usando a chave oficial)
-            localStorage.setItem("@SabeTudoCristao:guest", JSON.stringify(updatedUser));
+            // Salva o convidado apenas no localStorage
+           // localStorage.setItem("@SabeTudoCristao:guest", JSON.stringify(updatedUser));
+           try {
+            // Usa a função importada do seu helper.ts
+            const secretString = encodeGuestData(updatedUser);
+            localStorage.setItem(LOCAL_STORAGE_GUEST_KEY, secretString);
+        } catch (err) {
+            console.error("Falha ao persistir dados locais codificados:", err);
+        }
         } else {
             // Se for real, agenda o salvamento no Firestore
             scheduleSave(updatedUser);
@@ -244,3 +253,6 @@ async function getUserRank(user: GameUserData) {
 
     return c1.data().count + c2.data().count + c3.data().count + 1;
 }
+
+
+
