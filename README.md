@@ -1,73 +1,38 @@
-# React + TypeScript + Vite
+# 🪔 SabeTudo Cristão
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **SabeTudo Cristão** é um jogo mobile/web casual de perguntas e respostas bíblicas projetado para testar e aprofundar o conhecimento das Escrituras de forma dinâmica e competitiva. O projeto conta com mecânicas de gamificação baseadas em elementos bíblicos (como acender as lâmpadas da Menorá e acumular azeite e ouro) e um ranking global competitivo.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Funcionalidades Principais
 
-## React Compiler
+* **Fluxo de Jogador Convidado (Sandbox):** Os usuários podem experimentar o jogo instantaneamente sem necessidade de cadastro. Todos os dados, progresso e recursos são salvos localmente de forma isolada, evitando sobrecarga e registros "fantasmas" no banco de dados.
+* **Criptografia de Dados Locais:** Os dados do modo convidado armazenados no navegador são codificados em Base64, impedindo alterações fáceis ou trapaças casuais via console do desenvolvedor.
+* **Gerenciamento de Estado Avançado:** Uso estratégico de React Context API (`AuthContext` e `UserContext`) para alternar de forma transparente o fluxo de salvamento de dados (LocalStorage para convidados e Firestore para contas permanentes).
+* **Ranking Global Otimizado:** Sistema de desempate complexo baseado em 4 critérios de ordenação simultâneos (Menorás acesas > Azeite > Ouro > Total de acertos). O consumo de leitura do banco é protegido por paginação e limites rígidos de consultas (Top 50).
+* **Banco de Dados Resiliente:** Arquitetura com Firebase Firestore utilizando regras de segurança granulares, índices compostos e salvamento otimizado (*debounce* de escrita a cada 7 segundos sem mudanças) para economizar requisições.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **Front-end:** React, TypeScript, Vite
+* **Estilização:** CSS3 (Componentização e Layouts Responsivos)
+* **Back-end & Infraestrutura:** Firebase Auth, Firestore (NoSQL)
+* **Controle de Versão:** Git & GitHub
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🧠 Desafios Técnicos Solucionados
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Otimização de Custos e Infraestrutura:** Inicialmente, o modo convidado gerava centenas de contas anônimas no Firebase. Refatorei a arquitetura para isolar o convidado no armazenamento local, zerando o custo de infraestrutura para usuários casuais.
+2.  **Performance em Consultas NoSQL:** Criação e estruturação de índices compostos customizados no Firestore para permitir consultas de ordenação em múltiplos campos com paginação e performance em tempo real.
+3.  **Segurança e Consistência:** Implementação de funções de codificação e decodificação de dados para mitigar brechas de segurança no lado do cliente (Client-Side) durante o modo sandbox.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔧 Como Rodar o Projeto Localmente
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Clone o repositório:
+   ```bash
+   git clone [https://github.com/rochadoug/sabetudo-cristao.git](https://github.com/rochadoug/sabetudo-cristao.git)
