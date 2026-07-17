@@ -112,3 +112,79 @@
 .link-button span {
     font-size: 12px;
 }
+
+
+/* Progresso / Banner do Topo  Trocado para o banner convidando a criar conta*/
+.status-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+/* Estilo específico se for o banner de convidado (adiciona um destaque leve) */
+.status-card.guest-banner {
+    border: 1px solid #f59e0b; /* Borda dourada sutil */
+}
+
+/* Badges decorativas */
+.badge-warning {
+    background-color: #fef3c7;
+    color: #d97706;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+/* Textos dentro do Banner */
+.status-card h2 {
+    font-size: 18px;
+    color: #1a0246; /* Mesma cor do Bem-vindo */
+    margin: 0 0 6px 0;
+}
+
+.status-card p {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+/* Botão de Salvar Progresso (Visual Secundário/Outline) */
+.save-progress-button {
+    background-color: transparent;
+    color: #e65c00; /* Texto laranja */
+    border: 2px solid #e65c00; /* Borda laranja */
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 250px;
+}
+
+/* Efeito ao passar o mouse / tocar */
+.save-progress-button:active {
+    background-color: #fef2f2; /* Um fundo bem clarinho */
+    transform: scale(0.98);
+}

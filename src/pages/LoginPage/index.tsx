@@ -71,13 +71,13 @@ function LoginPage() {
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
 
-            <button
+           {/*  <button
               className="guest"
               onClick={() => setMode('login')}
               disabled
             >
               Conta permanente
-            </button>
+            </button>*/}
           </>
         )}
 
